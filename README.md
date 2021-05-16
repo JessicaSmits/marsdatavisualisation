@@ -4,4 +4,5 @@ For my first year and second semester of college I had to make a datavisualisati
 I used NASA's API for my datavisualisation.
 
 Here you can check out the website: https://jessicasmits.github.io/marsdatavisualisation/
+(it'll take a while to load)
 
