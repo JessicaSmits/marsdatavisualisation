@@ -19,6 +19,8 @@ let r = 0;
 let minPressure = 1000;
 let maxPressure = 0;
 let temperature;
+let dataCheck;
+let data;
 
 function preload() {
     imgMars = loadImage('assets/marsplaatje.jpg');
@@ -40,7 +42,7 @@ function setup() {
     temperature = round(temperature);
     seasonY = height / 1.50;
     
-    if (marsData){
+    if (dataCheck == true){
         for (let i = 0; i < marsData.sol_keys.length; i++){
             
             if (marsData[marsData.sol_keys[i]].PRE.mx > maxPressure){
@@ -60,7 +62,6 @@ function draw() {
     //achtergrond
     background(0);
     imageMode(CENTER);
-    translate()
     image(imgMars, width/2, height/2, 700, 700);
 
     //tekst
@@ -70,8 +71,7 @@ function draw() {
     text('Weather by InSight at Elysium Planitia', width / 2, 100);
 
     //data
-
-    if (marsData) {
+    if (dataCheck == true) {
         //datum
         textSize(25);
         text(dagen[dag] + ' ' + datum.getDate() + ' ' + maanden[maand] + ' ' + datum.getFullYear(), width / 4, 200);
@@ -180,16 +180,19 @@ function draw() {
         if (marsData[marsData.sol_keys[klik]].Season === 'winter') {
             image(imgSnowflake, 0, 0, imgGrootte, imgGrootte);
         } else if (marsData[marsData.sol_keys[klik]].Season === 'spring') {
-            image(imgFlower, 0, 0, imgGrootte, imgGrootte)
+            image(imgFlower, 0, 0, imgGrootte, imgGrootte);
         } else if (marsData[marsData.sol_keys[klik]].Season === 'summer') {
-            image(imgSun, 0, 0, imgGrootte, imgGrootte)
+            image(imgSun, 0, 0, imgGrootte, imgGrootte);
         } else if (marsData[marsData.sol_keys[klik]].Season === 'fall') {
-            image(imgLeaf, 0, 0, imgGrootte, imgGrootte)
+            image(imgLeaf, 0, 0, imgGrootte, imgGrootte);
         } else {
-            image(imgFlower, 0, 0, imgGrootte, imgGrootte)
+            image(imgFlower, 0, 0, imgGrootte, imgGrootte);
         }
         pop()
 
+    } else {
+        textSize(50);
+        text('No valid data has been measured by InSight, \n come back another time', width/2, height/2);
     }
 
     if (animationFrame < animationDurationFrames) {
@@ -200,13 +203,19 @@ function draw() {
 
 function finishedLoadingData(data) {
     marsData = data;
-    ruweDatum = marsData[marsData.sol_keys[klik]].First_UTC,
-        datum = new Date(ruweDatum);
+    if (marsData.sol_keys[0] == 'undefined') {
+        dataCheck = true;
+        ruweDatum = marsData[marsData.sol_keys[klik]].First_UTC,
+            datum = new Date(ruweDatum);
 
-    dagen = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    maanden = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Oktober', 'November', 'December']
-    dag = datum.getDay();
-    maand = datum.getMonth();
+        dagen = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        maanden = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Oktober', 'November', 'December']
+        dag = datum.getDay();
+        maand = datum.getMonth();
+    } else {
+        dataCheck = false;
+    }
+
 }
 
 function mousePressed() {
