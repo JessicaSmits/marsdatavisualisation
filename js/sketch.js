@@ -192,7 +192,7 @@ function draw() {
 
     } else {
         textSize(50);
-        text('No valid data has been measured by InSight, \n come back another time', width/2, height/2);
+        text('No valid data has been measured by InSight, \n come back another time.', width/2, height/2);
     }
 
     if (animationFrame < animationDurationFrames) {
